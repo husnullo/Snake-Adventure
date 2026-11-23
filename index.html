@@ -271,15 +271,32 @@ button:active { transform:translateY(2px); box-shadow:0 3px 0 rgba(0,0,0,.16); }
     }
   }
 
-  // Requirement 4/5: fruit is a random picture and changes after each meal.
+  // Requirement 4/5: draw a bright fruit icon with canvas shapes so it
+  // remains visible even on phones that cannot render emoji inside canvas.
   function drawFood() {
     const cx = food.x * CELL + CELL / 2;
     const cy = food.y * CELL + CELL / 2;
+    const fruitIndex = fruits.indexOf(food.picture);
+    const colors = ["#ff4057", "#ff4f91", "#d92f54", "#ff9f1c", "#8b4bd8", "#ff5263", "#ffb52e", "#73c94b", "#ffd23f", "#ff8a24"];
+    const color = colors[Math.max(0, fruitIndex)];
     ctx.save();
-    ctx.font = "22px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(food.picture, cx, cy + 1);
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 10;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(cx, cy + 1, CELL * 0.36, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = "#6b3d20";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - CELL * 0.25);
+    ctx.lineTo(cx + 2, cy - CELL * 0.48);
+    ctx.stroke();
+    ctx.fillStyle = "#65e572";
+    ctx.beginPath();
+    ctx.ellipse(cx + CELL * 0.18, cy - CELL * 0.34, CELL * 0.19, CELL * 0.09, -0.5, 0, Math.PI * 2);
+    ctx.fill();
     ctx.restore();
   }
 
